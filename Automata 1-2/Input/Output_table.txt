@@ -1,0 +1,12 @@
+q0 0 a
+q0 1 b
+q1 0 c
+q1 1 d
+q2 0 e
+q2 1 f
+q3 0 g
+q3 1 h
+q4 0 i
+q4 1 j
+q5 0 k
+q5 1 l
