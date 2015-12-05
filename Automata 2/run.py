@@ -22,6 +22,7 @@ class MyLexer(object):
        'CHAR',
        'PLUS',
        'STAR',
+       'MUL',
        'LPAREN',
        'RPAREN',
     )
@@ -29,6 +30,7 @@ class MyLexer(object):
     # Regular expression rules for simple tokens
     t_CHAR = r'[a-zA-Z0-9_]'
     t_PLUS    = r'\+'
+    t_MUL = r'\.'
     t_STAR   = r'\*'
     t_LPAREN  = r'\('
     t_RPAREN  = r'\)'
@@ -71,10 +73,16 @@ def p_expr(p):
     '''expr : expr PLUS expr
             | LPAREN expr RPAREN
             | expr STAR
-            | expr expr
+            | expr MUL expr
             | CHAR
     '''
 """
+
+precedence = (
+    ('left','PLUS'),
+    ('left','MUL'),
+    ('left','STAR'),
+    )
 
 def p_expr_plus(p):
     'expr : expr PLUS expr'
@@ -91,6 +99,13 @@ def p_expr_plus(p):
     start_state = state_num + 1
     state_num +=2
 
+def p_expr_mul(p):
+    'expr : expr MUL expr'
+    global state_num,start_state
+    p[0] = (p[1][0],p[3][1])
+    final_states.remove(p[1][1])
+    transitiontable.append(DFA.Transition(p[1][1],"eps",p[3][0]))
+    start_state = p[1][0]
 
 def p_expr_PAREN(p):
     'expr : LPAREN expr RPAREN'
@@ -102,7 +117,6 @@ def p_expr_STAR(p):
     p[0] = (state_num+1,state_num+2)
     final_states.append(state_num+2)
     final_states.remove(p[1][1])
-
     transitiontable.append(DFA.Transition(state_num+1,"eps",p[1][0]))
     transitiontable.append(DFA.Transition(p[1][1],"eps",p[1][0]))
     transitiontable.append(DFA.Transition(p[1][1],"eps",state_num+2))
@@ -110,13 +124,6 @@ def p_expr_STAR(p):
     start_state = state_num + 1
     state_num +=2
 
-def p_expr_mul(p):
-    'expr : expr expr'
-    global state_num,start_state
-    p[0] = (p[1][0],p[2][1])
-    final_states.remove(p[1][1])
-    transitiontable.append(DFA.Transition(p[1][1],"eps",p[2][0]))
-    start_state = p[1][0]
 
 def p_expr_char(p):
     'expr : CHAR'
@@ -134,13 +141,12 @@ def p_expr_char(p):
         input_symbols.append(p[1])
 
 
-
 statelist = []
 input_symbols = []
 transitiontable = []
 start_state = 0
 final_states = []
-state_num = 0
+state_num = -1
 
 
 def p_error(p):
@@ -153,7 +159,7 @@ yacc.yacc()
 inputregular = raw_input("Input the regular expression (e = epsilon) : \n")
 t =  yacc.parse(inputregular)
 
-state_list = range(1,state_num+1)
+state_list = range(0,state_num+1)
 
 """
 print state_list

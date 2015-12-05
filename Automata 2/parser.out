@@ -4,23 +4,24 @@ Grammar
 
 Rule 0     S' -> expr
 Rule 1     expr -> expr PLUS expr
-Rule 2     expr -> LPAREN expr RPAREN
-Rule 3     expr -> expr STAR
-Rule 4     expr -> expr expr
+Rule 2     expr -> expr MUL expr
+Rule 3     expr -> LPAREN expr RPAREN
+Rule 4     expr -> expr STAR
 Rule 5     expr -> CHAR
 
 Terminals, with rules where they appear
 
 CHAR                 : 5
-LPAREN               : 2
+LPAREN               : 3
+MUL                  : 2
 PLUS                 : 1
-RPAREN               : 2
-STAR                 : 3
+RPAREN               : 3
+STAR                 : 4
 error                : 
 
 Nonterminals, with rules where they appear
 
-expr                 : 1 1 2 3 4 4 0
+expr                 : 1 1 2 2 3 4 0
 
 Parsing method: LALR
 
@@ -28,9 +29,9 @@ state 0
 
     (0) S' -> . expr
     (1) expr -> . expr PLUS expr
-    (2) expr -> . LPAREN expr RPAREN
-    (3) expr -> . expr STAR
-    (4) expr -> . expr expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
     (5) expr -> . CHAR
 
     LPAREN          shift and go to state 3
@@ -42,40 +43,32 @@ state 1
 
     (0) S' -> expr .
     (1) expr -> expr . PLUS expr
-    (3) expr -> expr . STAR
-    (4) expr -> expr . expr
-    (1) expr -> . expr PLUS expr
-    (2) expr -> . LPAREN expr RPAREN
-    (3) expr -> . expr STAR
-    (4) expr -> . expr expr
-    (5) expr -> . CHAR
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
 
-    PLUS            shift and go to state 6
+    PLUS            shift and go to state 5
+    MUL             shift and go to state 6
     STAR            shift and go to state 4
-    LPAREN          shift and go to state 3
-    CHAR            shift and go to state 2
 
-    expr                           shift and go to state 5
 
 state 2
 
     (5) expr -> CHAR .
 
     PLUS            reduce using rule 5 (expr -> CHAR .)
+    MUL             reduce using rule 5 (expr -> CHAR .)
     STAR            reduce using rule 5 (expr -> CHAR .)
-    LPAREN          reduce using rule 5 (expr -> CHAR .)
-    CHAR            reduce using rule 5 (expr -> CHAR .)
     $end            reduce using rule 5 (expr -> CHAR .)
     RPAREN          reduce using rule 5 (expr -> CHAR .)
 
 
 state 3
 
-    (2) expr -> LPAREN . expr RPAREN
+    (3) expr -> LPAREN . expr RPAREN
     (1) expr -> . expr PLUS expr
-    (2) expr -> . LPAREN expr RPAREN
-    (3) expr -> . expr STAR
-    (4) expr -> . expr expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
     (5) expr -> . CHAR
 
     LPAREN          shift and go to state 3
@@ -85,53 +78,22 @@ state 3
 
 state 4
 
-    (3) expr -> expr STAR .
+    (4) expr -> expr STAR .
 
-    PLUS            reduce using rule 3 (expr -> expr STAR .)
-    STAR            reduce using rule 3 (expr -> expr STAR .)
-    LPAREN          reduce using rule 3 (expr -> expr STAR .)
-    CHAR            reduce using rule 3 (expr -> expr STAR .)
-    $end            reduce using rule 3 (expr -> expr STAR .)
-    RPAREN          reduce using rule 3 (expr -> expr STAR .)
+    PLUS            reduce using rule 4 (expr -> expr STAR .)
+    MUL             reduce using rule 4 (expr -> expr STAR .)
+    STAR            reduce using rule 4 (expr -> expr STAR .)
+    $end            reduce using rule 4 (expr -> expr STAR .)
+    RPAREN          reduce using rule 4 (expr -> expr STAR .)
 
 
 state 5
 
-    (4) expr -> expr expr .
-    (1) expr -> expr . PLUS expr
-    (3) expr -> expr . STAR
-    (4) expr -> expr . expr
-    (1) expr -> . expr PLUS expr
-    (2) expr -> . LPAREN expr RPAREN
-    (3) expr -> . expr STAR
-    (4) expr -> . expr expr
-    (5) expr -> . CHAR
-
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for STAR resolved as shift
-  ! shift/reduce conflict for LPAREN resolved as shift
-  ! shift/reduce conflict for CHAR resolved as shift
-    $end            reduce using rule 4 (expr -> expr expr .)
-    RPAREN          reduce using rule 4 (expr -> expr expr .)
-    PLUS            shift and go to state 6
-    STAR            shift and go to state 4
-    LPAREN          shift and go to state 3
-    CHAR            shift and go to state 2
-
-  ! PLUS            [ reduce using rule 4 (expr -> expr expr .) ]
-  ! STAR            [ reduce using rule 4 (expr -> expr expr .) ]
-  ! LPAREN          [ reduce using rule 4 (expr -> expr expr .) ]
-  ! CHAR            [ reduce using rule 4 (expr -> expr expr .) ]
-
-    expr                           shift and go to state 5
-
-state 6
-
     (1) expr -> expr PLUS . expr
     (1) expr -> . expr PLUS expr
-    (2) expr -> . LPAREN expr RPAREN
-    (3) expr -> . expr STAR
-    (4) expr -> . expr expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
     (5) expr -> . CHAR
 
     LPAREN          shift and go to state 3
@@ -139,75 +101,76 @@ state 6
 
     expr                           shift and go to state 8
 
-state 7
+state 6
 
-    (2) expr -> LPAREN expr . RPAREN
-    (1) expr -> expr . PLUS expr
-    (3) expr -> expr . STAR
-    (4) expr -> expr . expr
+    (2) expr -> expr MUL . expr
     (1) expr -> . expr PLUS expr
-    (2) expr -> . LPAREN expr RPAREN
-    (3) expr -> . expr STAR
-    (4) expr -> . expr expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
     (5) expr -> . CHAR
 
-    RPAREN          shift and go to state 9
-    PLUS            shift and go to state 6
-    STAR            shift and go to state 4
     LPAREN          shift and go to state 3
     CHAR            shift and go to state 2
 
-    expr                           shift and go to state 5
+    expr                           shift and go to state 9
+
+state 7
+
+    (3) expr -> LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS expr
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
+
+    RPAREN          shift and go to state 10
+    PLUS            shift and go to state 5
+    MUL             shift and go to state 6
+    STAR            shift and go to state 4
+
 
 state 8
 
     (1) expr -> expr PLUS expr .
     (1) expr -> expr . PLUS expr
-    (3) expr -> expr . STAR
-    (4) expr -> expr . expr
-    (1) expr -> . expr PLUS expr
-    (2) expr -> . LPAREN expr RPAREN
-    (3) expr -> . expr STAR
-    (4) expr -> . expr expr
-    (5) expr -> . CHAR
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for STAR resolved as shift
-  ! shift/reduce conflict for LPAREN resolved as shift
-  ! shift/reduce conflict for CHAR resolved as shift
+    PLUS            reduce using rule 1 (expr -> expr PLUS expr .)
     $end            reduce using rule 1 (expr -> expr PLUS expr .)
     RPAREN          reduce using rule 1 (expr -> expr PLUS expr .)
-    PLUS            shift and go to state 6
+    MUL             shift and go to state 6
     STAR            shift and go to state 4
-    LPAREN          shift and go to state 3
-    CHAR            shift and go to state 2
 
-  ! PLUS            [ reduce using rule 1 (expr -> expr PLUS expr .) ]
+  ! MUL             [ reduce using rule 1 (expr -> expr PLUS expr .) ]
   ! STAR            [ reduce using rule 1 (expr -> expr PLUS expr .) ]
-  ! LPAREN          [ reduce using rule 1 (expr -> expr PLUS expr .) ]
-  ! CHAR            [ reduce using rule 1 (expr -> expr PLUS expr .) ]
+  ! PLUS            [ shift and go to state 5 ]
 
-    expr                           shift and go to state 5
 
 state 9
 
-    (2) expr -> LPAREN expr RPAREN .
+    (2) expr -> expr MUL expr .
+    (1) expr -> expr . PLUS expr
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
 
-    PLUS            reduce using rule 2 (expr -> LPAREN expr RPAREN .)
-    STAR            reduce using rule 2 (expr -> LPAREN expr RPAREN .)
-    LPAREN          reduce using rule 2 (expr -> LPAREN expr RPAREN .)
-    CHAR            reduce using rule 2 (expr -> LPAREN expr RPAREN .)
-    $end            reduce using rule 2 (expr -> LPAREN expr RPAREN .)
-    RPAREN          reduce using rule 2 (expr -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 2 (expr -> expr MUL expr .)
+    MUL             reduce using rule 2 (expr -> expr MUL expr .)
+    $end            reduce using rule 2 (expr -> expr MUL expr .)
+    RPAREN          reduce using rule 2 (expr -> expr MUL expr .)
+    STAR            shift and go to state 4
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for PLUS in state 5 resolved as shift
-WARNING: shift/reduce conflict for STAR in state 5 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 5 resolved as shift
-WARNING: shift/reduce conflict for CHAR in state 5 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 8 resolved as shift
-WARNING: shift/reduce conflict for STAR in state 8 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 8 resolved as shift
-WARNING: shift/reduce conflict for CHAR in state 8 resolved as shift
+  ! STAR            [ reduce using rule 2 (expr -> expr MUL expr .) ]
+  ! PLUS            [ shift and go to state 5 ]
+  ! MUL             [ shift and go to state 6 ]
+
+
+state 10
+
+    (3) expr -> LPAREN expr RPAREN .
+
+    PLUS            reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    MUL             reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    STAR            reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    $end            reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+

@@ -5,9 +5,9 @@ _tabversion = '3.8'
 
 _lr_method = 'LALR'
 
-_lr_signature = '29829CA5FF4B6920F6655B5F83AF3D58'
+_lr_signature = '64030EE493B9A45D2193D4952CB3C275'
     
-_lr_action_items = {'RPAREN':([2,4,5,7,8,9,],[-5,-3,-4,9,-1,-2,]),'CHAR':([0,1,2,3,4,5,6,7,8,9,],[2,2,-5,2,-3,2,2,2,2,-2,]),'PLUS':([1,2,4,5,7,8,9,],[6,-5,-3,6,6,6,-2,]),'LPAREN':([0,1,2,3,4,5,6,7,8,9,],[3,3,-5,3,-3,3,3,3,3,-2,]),'STAR':([1,2,4,5,7,8,9,],[4,-5,-3,4,4,4,-2,]),'$end':([1,2,4,5,8,9,],[0,-5,-3,-4,-1,-2,]),}
+_lr_action_items = {'STAR':([1,2,4,7,8,9,10,],[4,-5,-4,4,4,4,-3,]),'RPAREN':([2,4,7,8,9,10,],[-5,-4,10,-1,-2,-3,]),'CHAR':([0,3,5,6,],[2,2,2,2,]),'PLUS':([1,2,4,7,8,9,10,],[5,-5,-4,5,-1,-2,-3,]),'LPAREN':([0,3,5,6,],[3,3,3,3,]),'MUL':([1,2,4,7,8,9,10,],[6,-5,-4,6,6,-2,-3,]),'$end':([1,2,4,8,9,10,],[0,-5,-4,-1,-2,-3,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expr':([0,1,3,5,6,7,8,],[1,5,7,5,8,5,5,]),}
+_lr_goto_items = {'expr':([0,3,5,6,],[1,7,8,9,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,9 +26,9 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> expr","S'",1,None,None,None),
-  ('expr -> expr PLUS expr','expr',3,'p_expr_plus','run2.py',73),
-  ('expr -> LPAREN expr RPAREN','expr',3,'p_expr_PAREN','run2.py',77),
-  ('expr -> expr STAR','expr',2,'p_expr_STAR','run2.py',81),
-  ('expr -> expr expr','expr',2,'p_expr_mul','run2.py',85),
-  ('expr -> CHAR','expr',1,'p_expr_char','run2.py',89),
+  ('expr -> expr PLUS expr','expr',3,'p_expr_plus','run.py',88),
+  ('expr -> expr MUL expr','expr',3,'p_expr_mul','run.py',103),
+  ('expr -> LPAREN expr RPAREN','expr',3,'p_expr_PAREN','run.py',111),
+  ('expr -> expr STAR','expr',2,'p_expr_STAR','run.py',115),
+  ('expr -> CHAR','expr',1,'p_expr_char','run.py',129),
 ]
