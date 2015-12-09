@@ -1,0 +1,197 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> expr
+Rule 1     expr -> expr PLUS expr
+Rule 2     expr -> expr MUL expr
+Rule 3     expr -> LPAREN expr RPAREN
+Rule 4     expr -> expr STAR
+Rule 5     expr -> CHAR
+Rule 6     expr -> EPS
+
+Terminals, with rules where they appear
+
+CHAR                 : 5
+EPS                  : 6
+LPAREN               : 3
+MUL                  : 2
+PLUS                 : 1
+RPAREN               : 3
+STAR                 : 4
+error                : 
+
+Nonterminals, with rules where they appear
+
+expr                 : 1 1 2 2 3 4 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expr
+    (1) expr -> . expr PLUS expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
+    (5) expr -> . CHAR
+    (6) expr -> . EPS
+
+    LPAREN          shift and go to state 4
+    CHAR            shift and go to state 3
+    EPS             shift and go to state 2
+
+    expr                           shift and go to state 1
+
+state 1
+
+    (0) S' -> expr .
+    (1) expr -> expr . PLUS expr
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
+
+    PLUS            shift and go to state 6
+    MUL             shift and go to state 7
+    STAR            shift and go to state 5
+
+
+state 2
+
+    (6) expr -> EPS .
+
+    PLUS            reduce using rule 6 (expr -> EPS .)
+    MUL             reduce using rule 6 (expr -> EPS .)
+    STAR            reduce using rule 6 (expr -> EPS .)
+    $end            reduce using rule 6 (expr -> EPS .)
+    RPAREN          reduce using rule 6 (expr -> EPS .)
+
+
+state 3
+
+    (5) expr -> CHAR .
+
+    PLUS            reduce using rule 5 (expr -> CHAR .)
+    MUL             reduce using rule 5 (expr -> CHAR .)
+    STAR            reduce using rule 5 (expr -> CHAR .)
+    $end            reduce using rule 5 (expr -> CHAR .)
+    RPAREN          reduce using rule 5 (expr -> CHAR .)
+
+
+state 4
+
+    (3) expr -> LPAREN . expr RPAREN
+    (1) expr -> . expr PLUS expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
+    (5) expr -> . CHAR
+    (6) expr -> . EPS
+
+    LPAREN          shift and go to state 4
+    CHAR            shift and go to state 3
+    EPS             shift and go to state 2
+
+    expr                           shift and go to state 8
+
+state 5
+
+    (4) expr -> expr STAR .
+
+    PLUS            reduce using rule 4 (expr -> expr STAR .)
+    MUL             reduce using rule 4 (expr -> expr STAR .)
+    STAR            reduce using rule 4 (expr -> expr STAR .)
+    $end            reduce using rule 4 (expr -> expr STAR .)
+    RPAREN          reduce using rule 4 (expr -> expr STAR .)
+
+
+state 6
+
+    (1) expr -> expr PLUS . expr
+    (1) expr -> . expr PLUS expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
+    (5) expr -> . CHAR
+    (6) expr -> . EPS
+
+    LPAREN          shift and go to state 4
+    CHAR            shift and go to state 3
+    EPS             shift and go to state 2
+
+    expr                           shift and go to state 9
+
+state 7
+
+    (2) expr -> expr MUL . expr
+    (1) expr -> . expr PLUS expr
+    (2) expr -> . expr MUL expr
+    (3) expr -> . LPAREN expr RPAREN
+    (4) expr -> . expr STAR
+    (5) expr -> . CHAR
+    (6) expr -> . EPS
+
+    LPAREN          shift and go to state 4
+    CHAR            shift and go to state 3
+    EPS             shift and go to state 2
+
+    expr                           shift and go to state 10
+
+state 8
+
+    (3) expr -> LPAREN expr . RPAREN
+    (1) expr -> expr . PLUS expr
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
+
+    RPAREN          shift and go to state 11
+    PLUS            shift and go to state 6
+    MUL             shift and go to state 7
+    STAR            shift and go to state 5
+
+
+state 9
+
+    (1) expr -> expr PLUS expr .
+    (1) expr -> expr . PLUS expr
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
+
+    PLUS            reduce using rule 1 (expr -> expr PLUS expr .)
+    $end            reduce using rule 1 (expr -> expr PLUS expr .)
+    RPAREN          reduce using rule 1 (expr -> expr PLUS expr .)
+    MUL             shift and go to state 7
+    STAR            shift and go to state 5
+
+  ! MUL             [ reduce using rule 1 (expr -> expr PLUS expr .) ]
+  ! STAR            [ reduce using rule 1 (expr -> expr PLUS expr .) ]
+  ! PLUS            [ shift and go to state 6 ]
+
+
+state 10
+
+    (2) expr -> expr MUL expr .
+    (1) expr -> expr . PLUS expr
+    (2) expr -> expr . MUL expr
+    (4) expr -> expr . STAR
+
+    PLUS            reduce using rule 2 (expr -> expr MUL expr .)
+    MUL             reduce using rule 2 (expr -> expr MUL expr .)
+    $end            reduce using rule 2 (expr -> expr MUL expr .)
+    RPAREN          reduce using rule 2 (expr -> expr MUL expr .)
+    STAR            shift and go to state 5
+
+  ! STAR            [ reduce using rule 2 (expr -> expr MUL expr .) ]
+  ! PLUS            [ shift and go to state 6 ]
+  ! MUL             [ shift and go to state 7 ]
+
+
+state 11
+
+    (3) expr -> LPAREN expr RPAREN .
+
+    PLUS            reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    MUL             reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    STAR            reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    $end            reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 3 (expr -> LPAREN expr RPAREN .)
+
