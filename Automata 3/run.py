@@ -176,7 +176,6 @@ inputregular = """
 (q+q.q+q.q.q+q.s+w+w.w+w.d+w.s.s+w.w.q+w.w.a+w.w.s+w.w.e.e+w.w.x.x+w.w.a.a+w.w.s.s+e+e.e+a+a.a+a.s+s+s.s+s.s.s+d+d.d+x+x.x+c+!).\
 (c+!))*
 """
-inputregular1 = "(q+w).(1+2+!).(q+w.w+w.w.w)"
 
 t =  yacc.parse(inputregular)
 
@@ -276,7 +275,7 @@ for i in final_states :
         index = d_check_list.index(j)
         if i in j and not(index in d_final_states):
             d_final_states.append(index)
-"""
+            
 print "#################  DFA  #################"
 print "States : ",d_state_list
 print "Vocabulary : ", input_symbols
@@ -287,7 +286,7 @@ print "Initial State : ",d_start_state
 print "Final State : ",d_final_states
 
 print 'A DFA is successfully made!'
-"""
+
 DFA1 = DFA(d_state_list,input_symbols,d_transition_table,d_start_state,d_final_states)
 
 #make m-dfa
@@ -364,7 +363,7 @@ for i in m_state_list :
 
 
 md_state_list = range(len(m_state_list))
-"""
+
 print "################# m-DFA  #################"
 print "States : ",md_state_list
 print "Vocabulary : ", md_input_symbols
@@ -373,7 +372,7 @@ for i in md_transition_table:
     print "(",i.curr_state,",",i.input_character,") => ",i.next_state
 print "Initial State : ",md_start_state
 print "Final State : ",md_final_states
-"""
+
 DFA2 = DFA(d_state_list,input_symbols,d_transition_table,d_start_state,d_final_states)
 
 """
